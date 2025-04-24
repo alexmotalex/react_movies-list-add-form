@@ -6,6 +6,13 @@ type Props = {
   onAdd: (movie: Movie) => void;
 };
 
+const REQUIRED_FIELDS: (keyof Movie)[] = [
+  'title',
+  'imgUrl',
+  'imdbUrl',
+  'imdbId',
+];
+
 const defaultValues: Movie = {
   title: '',
   description: '',
@@ -13,12 +20,6 @@ const defaultValues: Movie = {
   imdbUrl: '',
   imdbId: '',
 };
-const REQUIRED_FIELDS: (keyof Movie)[] = [
-  'title',
-  'imgUrl',
-  'imdbUrl',
-  'imdbId',
-];
 
 export const NewMovie: React.FC<Props> = ({ onAdd }) => {
   const [count, setCount] = useState(0);
@@ -43,6 +44,10 @@ export const NewMovie: React.FC<Props> = ({ onAdd }) => {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (!isFormValid(values)) {
+      return;
+    }
+
     onAdd(values);
     setCount(p => p + 1);
     setValues(defaultValues);
